@@ -6,14 +6,40 @@
 
 package chatprogramm.Controller;
 
+import chatprogramm.Model.Transmitter;
+import chatprogramm.View.Fenster;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  *
  * @author nobody
  */
-public class SendController
+public class SendController implements ActionListener
 {
-  public SendController()
+    private Fenster view;
+    private Transmitter tm;
+  public SendController(Fenster view, Transmitter tm)
   {
-
+      this.view = view;
+      this.tm = tm;
   }
+  
+  public void registerEvents()
+  {
+      this.view.getTfInput().addActionListener(this);
+      this.view.getBtnSend().addActionListener(this);
+  }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        String message;
+        if(src == view.getTfInput() || src == view.getBtnSend()){
+            message = view.getTfInput().getText();
+            tm.send(message);
+            view.getTaChat().append("You:\n" + message + "\n\n");
+            view.getTfInput().setText("");
+        }
+    }
 }
