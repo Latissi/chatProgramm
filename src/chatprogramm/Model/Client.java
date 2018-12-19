@@ -27,14 +27,11 @@ import java.util.logging.Logger;
  */
 public class Client extends Communicator implements Runnable
 {
-    private BufferedReader reader;
-    private PrintWriter writer;
-    private final int PORT ;
+    private final int PORT;
     private final String SERVER_IP;
     private Socket s;
     private Thread thd;
-    private boolean gestoppt;
-    private ArrayList<String> messageBuffer;
+    private boolean stopReceiving;
     private static Logger lg;
     
   public Client(String ServerIP, int port) throws IOException
@@ -43,7 +40,7 @@ public class Client extends Communicator implements Runnable
       this.SERVER_IP = ServerIP;
       this.s = new Socket(SERVER_IP, PORT);
       messageBuffer = new ArrayList<String>();
-      gestoppt = false;
+      stopReceiving = false;
       lg = OhmLogger.getLogger();
       
   }
@@ -83,37 +80,8 @@ public class Client extends Communicator implements Runnable
     @Override
   public void stopp()
   {
-      gestoppt = true;
-  }
-  
-  public void send(String message)
-  {
-      this.writer.println(message);
-      this.writer.flush();
-  }
-  
-    @Override
-  public String getMessage()
-  {
-      String message = "";
-      message = messageBuffer.stream().map((m) -> m +"\n").reduce(message, String::concat);
-      messageBuffer.clear();
-      return message;
-  }
-  
-  private synchronized void receive()
-  {
-      String message = "";
-      try{
-          message = this.reader.readLine();
-      }
-      catch (IOException io){
-          System.err.println(io);
-      }
-      messageBuffer.add(message);
-      this.setChanged();
-      this.notifyObservers();
-  }
+      stopReceiving = true;
+  } 
 
   public void run()
   {
@@ -122,15 +90,9 @@ public class Client extends Communicator implements Runnable
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while(!gestoppt)
+        while(!stopReceiving)
         {
             receive();
         }
   }
-
-    @Override
-    public void sendMessage(String message) {
-        writer.println(message);
-        writer.flush();
-    }
 }
