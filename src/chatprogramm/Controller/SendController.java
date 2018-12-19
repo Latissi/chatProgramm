@@ -38,7 +38,7 @@ public class SendController implements ActionListener
         if(src == view.getTfInput() || src == view.getBtnSend()){
             message = view.getTfInput().getText();
             tm.send(message);
-            view.getTaChat().append("You:\n" + message + "\n\n");
+            view.getTaChat().append("You:\n" + message + "\n");
             view.getTfInput().setText("");
         }
     }

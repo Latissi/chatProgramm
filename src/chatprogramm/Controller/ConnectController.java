@@ -67,7 +67,7 @@ public class ConnectController implements ActionListener
                              view.getLblStatus().setText("Server is running");
                              break;
                     case 2: view.getBtnConnect().setEnabled(false);
-                            view.getBtnConnect().setEnabled(true);
+                            view.getBtnSend().setEnabled(true);
                             view.getTfIPaddress().setEnabled(false);
                             view.getCbServerClient().setEnabled(false);
                             view.getTfInput().setEnabled(true);
