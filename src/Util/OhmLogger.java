@@ -41,7 +41,7 @@ public class OhmLogger
   {
     try
     {
-      //logger.setUseParentHandlers(false);
+      logger.setUseParentHandlers(false);
       Properties props = new Properties();
       InputStream is = OhmLogger.class.getResourceAsStream("logger.properties");
       props.load(is);
@@ -54,15 +54,15 @@ public class OhmLogger
       FileHandler fh = new FileHandler(datei);
       ConsoleHandler ch = new ConsoleHandler();
       
-      
-      fh.setFormatter(new OhmFormatter());
-      logger.addHandler(fh);
-      
       ch.setFormatter(new OhmFormatter());
       
       logger.addHandler(ch);
       
       logger.setLevel(Level.parse(level));
+      
+      fh.setFormatter(new OhmFormatter());
+      
+      logger.addHandler(fh);
     }
     catch(IOException ix)
     {
