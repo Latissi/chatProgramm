@@ -33,7 +33,7 @@ public class OhmFormatter extends SimpleFormatter
              .append(df.format(new Date(record.getMillis()))).append(" | ");
      builder.append(record.getLevel()).append(" | ");
      builder.append(record.getSourceClassName()).append(" | ");
-     builder.append(formatMessage(record)).append("|");
+     builder.append(formatMessage(record)).append("|\n");
      return builder.toString();  
   }
   
