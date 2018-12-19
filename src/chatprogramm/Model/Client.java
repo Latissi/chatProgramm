@@ -93,6 +93,7 @@ public class Client extends Communicator implements Runnable
         while(!stopReceiving)
         {
             receive();
+            lg.info("Nachricht empfangen");
         }
   }
 }
