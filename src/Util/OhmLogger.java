@@ -13,7 +13,6 @@ import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import static java.util.logging.Level.ALL;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +50,7 @@ public class OhmLogger
       String file = props.getProperty("LOG_DATEI");
       
       String datei = path + File.separator + file;
-      FileHandler fh = new FileHandler(datei);
+      //FileHandler fh = new FileHandler(datei);
       ConsoleHandler ch = new ConsoleHandler();
       
       ch.setFormatter(new OhmFormatter());
@@ -60,9 +59,9 @@ public class OhmLogger
       
       logger.setLevel(Level.parse(level));
       
-      fh.setFormatter(new OhmFormatter());
+      //fh.setFormatter(new OhmFormatter());
       
-      logger.addHandler(fh);
+      //logger.addHandler(fh);
     }
     catch(IOException ix)
     {

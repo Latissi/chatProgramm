@@ -88,7 +88,7 @@ public class Client extends Communicator implements Runnable
         try {
             connect();
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            lg.severe("Fatal exception while connecting to Server");
         }
         while(!stopReceiving)
         {

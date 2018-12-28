@@ -39,13 +39,14 @@ public class Server extends Communicator implements Runnable
       this.PORT = port;
       stopReceiving = false;
       lg = OhmLogger.getLogger();
+      messageBuffer = new  ArrayList<String>();
   }
   
   
   private void connect() throws IOException
   {
       ServerSocket ss = new ServerSocket(PORT);
-      //lg.info("Warte auf Verbindung");
+      lg.info("Warte auf Verbindung");
       this.s = ss.accept();
       lg.info("Verbindung da");
       
@@ -88,7 +89,7 @@ public class Server extends Communicator implements Runnable
       try {
           connect();
       } catch (IOException ex) {
-          lg.info("Test");
+          lg.severe("Fatal exception while hosting server");
       }
       while(!stopReceiving){
         receive();

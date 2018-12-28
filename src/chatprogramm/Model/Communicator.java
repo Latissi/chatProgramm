@@ -5,22 +5,17 @@
  */
 package chatprogramm.Model;
 
-import Util.OhmLogger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Fabian
  */
 
-//Ist statt der abstract class (trotz Observable) auch ein Interface mögl.!?
 public abstract class Communicator extends Observable
 {
   protected BufferedReader reader;
@@ -29,7 +24,6 @@ public abstract class Communicator extends Observable
 
   public void Communicator()
   {
-    messageBuffer = new ArrayList<String>();
   }
 
   public void start(){};
@@ -46,14 +40,16 @@ public abstract class Communicator extends Observable
   public String getMessage()
   {
     String message = "";
-    message = messageBuffer.stream().map((m) -> m + "\n").reduce(message, String::concat);
+    for (String s : messageBuffer){
+        message += s;
+    }
     messageBuffer.clear();
     return message;
   }
 
   ;
     
-  protected synchronized void receive()
+    protected synchronized void receive()
   {
     String message = "";
     try
@@ -64,7 +60,12 @@ public abstract class Communicator extends Observable
     {
       System.err.println(io);
     }
+    try{
     messageBuffer.add(message);
+    }
+    catch(Exception ex){
+        System.err.println(ex);
+    }
     this.setChanged();
     this.notifyObservers();
   }

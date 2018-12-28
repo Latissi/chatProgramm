@@ -10,6 +10,7 @@ import Util.OhmLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -17,10 +18,11 @@ import java.util.logging.Logger;
  *
  * @author nobody
  */
-public class Transmitter extends Observable
+public class Transmitter extends Observable implements Observer
 {
   private Communicator com;
   private static Logger lg;
+  private String message;
   
   public Transmitter()
   {
@@ -40,15 +42,13 @@ public class Transmitter extends Observable
     if ("Server".equals(type)){
         com = new Server(port);
         com.start();
-        this.setChanged();
-        this.notifyObservers();
+        this.registerEvents();
         return 1;
     }
     else if("Client".equals(type)){
         com = new Client(serverIP, port);
         com.start();
-        this.setChanged();
-        this.notifyObservers();
+        this.registerEvents();
         return 2;
     }
     else{
@@ -61,9 +61,27 @@ public class Transmitter extends Observable
       com.sendMessage(s);
   }
   
-  public Communicator getCommunicator()
+  private void registerEvents()
   {
-      return com;
+      this.com.addObserver(this);
   }
+  
+  public String getMessage()
+  {
+      String str = "Answer:\n" + this.message + "\n";
+      return str;
+  }
+  
+    @Override
+    public void update(Observable o, Object arg) {
+        try{
+        message = com.getMessage();
+        }
+        catch (Exception ex){
+            System.err.println(ex);
+        }
+        this.setChanged();
+        this.notifyObservers();
+    }
   
 }
